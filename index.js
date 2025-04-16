@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 
 const app = express();
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 dotEnv.config();
 
@@ -22,6 +22,6 @@ app.use('/product', productRoutes);
 app.use('/uploads', express.static('uploads'));
 app.listen(port, () => { console.log(`server started and running at ${port}`) })
 
-app.use('/home', (_, res) => {
+app.use('/', (_, res) => {
     res.send("<h1> Welcome to server </h1>");
 })
