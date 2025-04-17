@@ -1,29 +1,35 @@
-import express from "express";
-import dotEnv from "dotenv";
-import mongoose from "mongoose";
-import vendorRoutes from "./routes/vendorRoutes.js";
-import firmRoutes from "./routes/firmRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import bodyParser from "body-parser";
-import cors from "cors";
+const express = require("express");
+const dotEnv = require("dotenv");
+const mongoose = require("mongoose");
+const vendorRoutes = require("./routes/vendorRoutes");
+const bodyParser = require("body-parser");
+const firmRoutes = require("./routes/firmRoutes");
+const productRoutes = require("./routes/productRoutes");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
-const port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
 dotEnv.config();
-
-mongoose.connect(process.env.MONGO_URL)
-    .then(() => console.log("moongoDB connected successfully"))
-    .catch((error) => console.log(error))
 app.use(cors());
-app.use(bodyParser.json())
-app.use('/vendor', vendorRoutes);
-app.use('/firm', firmRoutes);
-app.use('/product', productRoutes);
-app.use('/uploads', express.static('uploads'));
-app.listen(port, () => { console.log(`server started and running at ${port}`) })
 
-app.use('/', (_, res) => {
-    res.send("<h1> Welcome to server </h1>");
-})
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("MongoDB connected successfully!"))
+  .catch((error) => console.log(error));
+
+app.use(bodyParser.json());
+app.use("/vendor", vendorRoutes);
+app.use("/firm", firmRoutes);
+app.use("/product", productRoutes);
+app.use("/uploads", express.static("uploads"));
+
+app.listen(PORT, () => {
+  console.log(`server started and running at ${PORT}`);
+});
+
+app.use("/", (req, res) => {
+  res.send("<h1> Welcome to SUBY");
+});
