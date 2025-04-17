@@ -2,6 +2,7 @@ import Vendor from '../models/Vendor.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotEnv from 'dotenv';
+import mongoose from 'mongoose';
 dotEnv.config();
 
 
@@ -55,8 +56,11 @@ const getAllVendors = async (req, res)=>{
 }
 
 const getVendorById = async (req, res) => {
-    const vendorId = req.params.id;
+    const vendorId = req.params.vendorId;
     try {
+        if (!mongoose.Types.ObjectId.isValid(vendorId)) {
+            return res.status(400).json({ error: "Invalid vendor ID" });
+        }
         const vendor = await Vendor.findById(vendorId).populate('firm');
         if (!vendor) {
             return res.status(404).json({ message: 'Vendor not found' });
