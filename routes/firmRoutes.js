@@ -10,8 +10,8 @@ router.post('/add-firm', verifyToken, firmController.addFrim);
 
 router.get('/uploads/:imageName',(req, res) => {
     const imageName = req.params.imageName;
-    res.headersSent('content-type', 'image/jpeg');
-    res.sendFile(path.join(__dirname, '../uploads', imageName) );
+    res.header('Content-Type', 'image/*');
+    res.sendFile(path.join(__dirname, '..', 'uploads', imageName) );
 })
 router.delete('/:firmId', firmController.deleteFirmById);
 
