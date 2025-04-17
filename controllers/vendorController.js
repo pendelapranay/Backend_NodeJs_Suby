@@ -66,7 +66,12 @@ const getVendorById = async (req, res) => {
   const vendorId = req.params.apple;
 
   try {
-    const vendor = await Vendor.findById(vendorId).populate("firm");
+    const vendor = await Vendor.findById(vendorId).populate({
+      path: "firm",
+      populate: {
+        path: "products", // Populate the products within the firm
+      },
+    });
     if (!vendor) {
       return res.status(404).json({ error: "Vendor not found" });
     }
